@@ -2,7 +2,7 @@
   "name": "roguelike",
   "version": "0.0.1",
   "description": "一款拥有以撒玩法的RogueLike游戏",
-  "main": "main.js",
+  "main": "dist/bundle.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
