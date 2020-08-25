@@ -25,12 +25,13 @@ class MyDigger extends ROT.Map.Digger
 	}
 }
 
-ROT.RNG.setSeed(2234);
+ROT.RNG.setSeed(1234);
 var map = new MyDigger(50, 50);
 var display = new ROT.Display({fontSize:8});
 document.body.appendChild(display.getContainer());
 map.fuck(display.DEBUG);
 
+console.log("fuc you")
 /* var drawDoor = function(x, y) {
     display.draw(x, y, "", "", "red");
 }
