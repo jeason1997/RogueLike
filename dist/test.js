@@ -5,7 +5,7 @@ var Test = /** @class */ (function () {
     function Test() {
     }
     Test.prototype.Do = function (s) {
-        return '@' + s;
+        return '＃' + s;
     };
     return Test;
 }());
