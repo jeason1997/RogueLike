@@ -23,14 +23,15 @@
   },
   "homepage": "https://github.com/jeason1997/RogueLike#readme",
   "dependencies": {
-    "gulp": "^4.0.2",
-    "rot-js": "^2.1.4",
-    "typescript": "^4.0.2"
+    "rot-js": "^2.1.4"
   },
   "devDependencies": {
     "browserify": "^16.5.2",
+    "gulp": "^4.0.2",
+    "gulp-connect": "^5.7.0",
     "gulp-util": "^3.0.8",
     "tsify": "^5.0.1",
+    "typescript": "^4.0.2",
     "vinyl-source-stream": "^2.0.0",
     "watchify": "^3.11.1"
   }

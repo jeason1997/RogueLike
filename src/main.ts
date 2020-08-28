@@ -1,45 +1,32 @@
 import * as ROT from 'rot-js';
-import { CreateCallback } from 'rot-js/lib/map/map';
+import { Test } from './test';
 
-/* var d = new ROT.Display();
-var o = d.getOptions();
+var WEB = typeof window != 'undefined';
 
-document.body.appendChild(d.getContainer());
+export class Main {
 
-for (var i = 0; i < o.width; i++) {
-	for (var j = 0; j < o.height; j++) {
-		if (!i || !j || i + 1 == o.width || j + 1 == o.height) {
-			d.draw(i, j, "#", "gray", "black");
-		} else {
-			d.draw(i, j, ".", "#666", "black");
+	run() {
+		let d = new ROT.Display({
+			width: 11,
+			height: 5,
+			layout: WEB ? 'rect' : 'term'
+		});
+
+		if (WEB) {
+			document.body.appendChild(d.getContainer() as Node);
 		}
+
+		for (let i = 0; i < d._options.width; i++) {
+			for (let j = 0; j < d._options.height; j++) {
+				if (!i || !j || i + 1 == d._options.width || j + 1 == d._options.height) {
+					d.draw(i, j, "#", "gray", "black");
+					d.draw(i, j, ".", "#666", "black");
+				}
+			}
+		}
+		d.draw(d._options.width >> 1, d._options.height >> 1, "@", "goldenrod", "black");
+		d.drawText(0, 0, new Test().Do("fuck"));
 	}
 }
-d.draw(o.width >> 1, o.height >> 1, "@", "blue", "yellow"); */
 
-class MyDigger extends ROT.Map.Digger
-{
-	fuck(cb?: CreateCallback){
-		console.log("create");
-		this.create(cb);
-	}
-}
-
-ROT.RNG.setSeed(1234);
-var map = new MyDigger(50, 50);
-var display = new ROT.Display({fontSize:8});
-document.body.appendChild(display.getContainer());
-map.fuck(display.DEBUG);
-
-console.log("fuc you")
-/* var drawDoor = function(x, y) {
-    display.draw(x, y, "", "", "red");
-}
-
-var rooms = map.getRooms();
-for (var i=0; i<rooms.length; i++) {
-    var room = rooms[i];
-    
-
-	room.getDoors(drawDoor);
-} */
+new Main().run();
