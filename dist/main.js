@@ -1,50 +1,45 @@
 "use strict";
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Main = void 0;
-var ROT = __importStar(require("rot-js"));
-var test_1 = require("./test");
+var rot_js_1 = require("rot-js");
+var rot_js_2 = require("rot-js");
 var WEB = typeof window != 'undefined';
 var Main = /** @class */ (function () {
     function Main() {
     }
     Main.prototype.run = function () {
-        var d = new ROT.Display({
-            width: 11,
-            height: 5,
-            layout: WEB ? 'rect' : 'term'
+        var d = new rot_js_1.Display({
+            width: 80,
+            height: 30,
+            layout: WEB ? 'rect' : 'term',
         });
         if (WEB) {
             document.body.appendChild(d.getContainer());
+            //d._options.width = document.body.clientHeight / d._options.fontSize;
+            //d._options.height = document.body.clientWidth / d._options.fontSize;
+        }
+        else {
+            //d._options.width = process.stdout.rows;
+            //d._options.height = process.stdout.columns;
         }
         for (var i = 0; i < d._options.width; i++) {
             for (var j = 0; j < d._options.height; j++) {
                 if (!i || !j || i + 1 == d._options.width || j + 1 == d._options.height) {
-                    d.draw(i, j, "#", "gray", "black");
+                    d.draw(i, j, "#", "black", "gray");
+                }
+                else {
                     d.draw(i, j, ".", "#666", "black");
                 }
             }
         }
-        d.draw(d._options.width >> 1, d._options.height >> 1, "@", "goldenrod", "black");
-        d.drawText(0, 0, new test_1.Test().Do("fuck"));
+        var t = 255 / d._options.height;
+        for (var i = 0; i < d._options.height; i++) {
+            var fg = rot_js_2.Color.toRGB([i * t, i * t, i * t]);
+            var bg = rot_js_2.Color.toRGB([255 - i * t, 255 - i * t, 255 - i * t]);
+            //d.drawText(0, i, `%c{${fg}}%b{${bg}}Hello ${i}`);
+            d.draw(0, i, ['`', '.'], 'yellow', 'black');
+        }
+        d.draw(d._options.width >> 1, d._options.height >> 1, "@", "goldenrod", "blakc");
     };
     return Main;
 }());
