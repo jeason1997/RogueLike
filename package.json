@@ -23,6 +23,8 @@
   },
   "homepage": "https://github.com/jeason1997/RogueLike#readme",
   "dependencies": {
+    "@types/node": "^14.6.2",
+    "keypress": "^0.2.1",
     "rot-js": "^2.1.4"
   },
   "devDependencies": {
