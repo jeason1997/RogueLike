@@ -101,7 +101,6 @@ var Main = /** @class */ (function () {
 exports.Main = Main;
 var init = false;
 window.addEventListener("keypress", function (e) {
-    console.log(e.key);
     if (!init) {
         if (WEB) {
             //字体加载有延迟，所以需要等到字体加载完在开始游戏
@@ -114,7 +113,7 @@ window.addEventListener("keypress", function (e) {
         else {
             new Main().run();
         }
-        var docElm = document.documentElement;
+        /* var docElm = document.documentElement;
         //W3C
         if (docElm.requestFullscreen) {
             docElm.requestFullscreen();
@@ -130,7 +129,7 @@ window.addEventListener("keypress", function (e) {
         //IE11
         else if (elem.msRequestFullscreen) {
             elem.msRequestFullscreen();
-        }
+        } */
         init = true;
     }
 });

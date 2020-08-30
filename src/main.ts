@@ -122,7 +122,6 @@ export class Main {
 let init:boolean = false;
 
 window.addEventListener("keypress", e => {
-console.log(e.key)
 	if (!init){
 		if (WEB) {
 			//字体加载有延迟，所以需要等到字体加载完在开始游戏
@@ -135,7 +134,7 @@ console.log(e.key)
 			new Main().run();
 		}
 
-		var docElm = document.documentElement;
+		/* var docElm = document.documentElement;
         //W3C
         if (docElm.requestFullscreen) {
             docElm.requestFullscreen();
@@ -151,7 +150,7 @@ console.log(e.key)
         //IE11
         else if (elem.msRequestFullscreen) {
             elem.msRequestFullscreen();
-		}
+		} */
 		
 
 
