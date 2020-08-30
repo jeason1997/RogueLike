@@ -11,11 +11,11 @@ var Main = /** @class */ (function () {
         var d = new rot_js_1.Display({
             layout: WEB ? 'rect' : 'term',
             //字体大小，在浏览器canvas模式下才有用，nodejs下是取决于终端到字体大小的
-            fontSize: 50,
+            fontSize: 25,
             //tileWidth: 50,
-            //spacing: 1.5,
+            //spacing: 0.8,
             fontFamily: "pix",
-            forceSquareRatio: true,
+            //forceSquareRatio: true,
             bg: "black",
         });
         if (WEB) {
@@ -48,8 +48,8 @@ var Main = /** @class */ (function () {
             }
         }
         else {
-            d._options.width = 80; //process.stdout.columns;
-            d._options.height = 25; //process.stdout.rows;
+            //d._options.width = process.stdout.columns;
+            //d._options.height = process.stdout.rows;
             // acquire some libraries we'll need
             var keypress = require("keypress");
             // when the program terminates, put the console back the way we found it
@@ -99,14 +99,52 @@ var Main = /** @class */ (function () {
     return Main;
 }());
 exports.Main = Main;
-if (WEB) {
-    //字体加载有延迟，所以需要等到字体加载完在开始游戏
-    //https://segmentfault.com/a/1190000019860302?utm_source=tag-newest
-    var myFont = new FontFace('pix', 'url(/resources/fonts/方正像素16.ttf)');
-    myFont.load().then(function () {
-        new Main().run();
-    });
-}
-else {
-    new Main().run();
+var init = false;
+window.addEventListener("keypress", function (e) {
+    console.log(e.key);
+    if (!init) {
+        if (WEB) {
+            //字体加载有延迟，所以需要等到字体加载完在开始游戏
+            //https://segmentfault.com/a/1190000019860302?utm_source=tag-newest
+            var myFont = new FontFace('pix', 'url(/resources/fonts/方正像素16.ttf)');
+            myFont.load().then(function () {
+                new Main().run();
+            });
+        }
+        else {
+            new Main().run();
+        }
+        var docElm = document.documentElement;
+        //W3C
+        if (docElm.requestFullscreen) {
+            docElm.requestFullscreen();
+        }
+        //FireFox
+        else if (docElm.mozRequestFullScreen) {
+            docElm.mozRequestFullScreen();
+        }
+        //Chrome等
+        else if (docElm.webkitRequestFullScreen) {
+            docElm.webkitRequestFullScreen();
+        }
+        //IE11
+        else if (elem.msRequestFullscreen) {
+            elem.msRequestFullscreen();
+        }
+        init = true;
+    }
+});
+function guanbi() {
+    if (document.exitFullscreen) {
+        document.exitFullscreen();
+    }
+    else if (document.mozCancelFullScreen) {
+        document.mozCancelFullScreen();
+    }
+    else if (document.webkitCancelFullScreen) {
+        document.webkitCancelFullScreen();
+    }
+    else if (document.msExitFullscreen) {
+        document.msExitFullscreen();
+    }
 }
