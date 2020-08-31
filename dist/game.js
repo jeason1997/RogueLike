@@ -20,6 +20,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Game = void 0;
+var ROT = __importStar(require("rot-js"));
 var rot_js_1 = require("rot-js");
 var rot_js_2 = require("rot-js");
 var Global = __importStar(require("./main"));
@@ -31,7 +32,7 @@ var Game = /** @class */ (function () {
             fontSize: 36,
             //tileWidth: 50,
             //spacing: 0.8,
-            fontFamily: "pix",
+            fontFamily: "pix12",
             //forceSquareRatio: true,
             bg: "black",
         });
@@ -79,14 +80,18 @@ var Game = /** @class */ (function () {
         this.generatorMap();
     };
     Game.prototype.generatorMap = function () {
-        //ROT.RNG.setSeed(1234);
+        ROT.RNG.setSeed(1234);
         var map = new rot_js_2.Map.Digger(this.display._options.width, this.display._options.height);
-        map.create(this.display.DEBUG);
+        map.create(this.drawMap.bind(this));
         var rooms = map.getRooms();
         for (var i = 0; i < rooms.length; i++) {
             var room = rooms[i];
-            room.getDoors(this.drawDoor);
+            room.getDoors(this.drawDoor.bind(this));
         }
+    };
+    Game.prototype.drawMap = function (x, y, contents) {
+        var color = contents == 0 ? "white" : "black";
+        this.display.draw(x, y, "", "", color);
     };
     Game.prototype.drawDoor = function (x, y) {
         this.display.draw(x, y, "", "", "red");
@@ -95,3 +100,4 @@ var Game = /** @class */ (function () {
     return Game;
 }());
 exports.Game = Game;
+//# sourceMappingURL=game.js.map

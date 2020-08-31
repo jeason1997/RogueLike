@@ -9,7 +9,6 @@ if (IS_WEB) {
 	var node = document.getElementById("startgame");
 	node?.parentNode?.removeChild(node);
 	new Game().run();
-	GAME_INIT = true;
 
 	document.addEventListener("keydown", keydown);
 

@@ -2,21 +2,31 @@
 <html>
 
 <head>
+	<link rel="preload" href="resources/fonts/方正像素12.ttf" as="font" type="font/ttf">
+	<link rel="preload" href="resources/fonts/方正像素16.ttf" as="font" type="font/ttf">
+	<link rel="preload" href="resources/fonts/3270Narrow.ttf" as="font" type="font/ttf">
+	
 	<style type="text/css">
 		body {
 			background: rgb(90, 87, 87)
 		}
 
 		@font-face {
-			font-family: "pix";
-			src: url("/resources/fonts/方正像素16.ttf");
+			font-family: "pix12";
+			src: url(resources/fonts/方正像素12.ttf);
+		}
+		@font-face {
+			font-family: "pix16";
+			src: url(resources/fonts/方正像素16.ttf);
+		}
+		@font-face {
+			font-family: "3270";
+			src: url(resources/fonts/3270Narrow.ttf);
 		}
 	</style>
 </head>
 
 <body id="root">
-	<!--字体需要预先用一次，不然不会提前加载-->
-	<font id="startgame" face="pix">按任意键开始游戏</font>
 	<script src="//cdn.jsdelivr.net/npm/eruda"></script>
 	<script>eruda.init();</script>
 	<script src="dist/bundle.js"></script>

@@ -9,7 +9,7 @@ import * as Global from './main';
 export class Game {
 
 	private display: Display;
-	
+
 	constructor() {
 		this.display = new Display({
 			layout: Global.IS_WEB ? 'rect' : 'term',
@@ -17,14 +17,13 @@ export class Game {
 			fontSize: 36,
 			//tileWidth: 50,
 			//spacing: 0.8,
-			fontFamily: "pix",
+			fontFamily: "pix12",
 			//forceSquareRatio: true,
 			bg: "black",
 		});
 	}
 
 	run() {
-
 		if (Global.IS_WEB) {
 			document.body.appendChild(this.display.getContainer() as Node);
 
@@ -69,23 +68,27 @@ export class Game {
 				}
 			});
 		}
-
 		this.generatorMap();
 	}
 
 	generatorMap() {
-		//ROT.RNG.setSeed(1234);
+		ROT.RNG.setSeed(1234);
 		var map = new Map.Digger(this.display._options.width, this.display._options.height);
-		map.create(this.display.DEBUG);
+		map.create(this.drawMap.bind(this));
 
 		var rooms = map.getRooms();
 		for (var i = 0; i < rooms.length; i++) {
 			var room = rooms[i];
-			room.getDoors(this.drawDoor);
+			room.getDoors(this.drawDoor.bind(this));
 		}
 	}
 
-	drawDoor (x: number, y: number) {
+	drawMap(x: number, y: number, contents: number) {
+		let color = contents == 0 ? "white" : "black";
+		this.display.draw(x, y, "", "", color)
+	}
+
+	drawDoor(x: number, y: number) {
 		this.display.draw(x, y, "", "", "red");
 	};
 }
