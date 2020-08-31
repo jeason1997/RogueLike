@@ -1,17 +1,17 @@
 import * as ROT from 'rot-js';
 import { Display } from "rot-js";
 import { Color } from "rot-js";
+import { Map } from "rot-js";
 import Canvas from 'rot-js/lib/display/canvas';
 import * as Global from './main';
 
 
 export class Game {
 
-	constructor(){
-	}
+	private display: Display;
 	
-	run() {
-		let d = new Display({
+	constructor() {
+		this.display = new Display({
 			layout: Global.IS_WEB ? 'rect' : 'term',
 			//字体大小，在浏览器canvas模式下才有用，nodejs下是取决于终端到字体大小的
 			fontSize: 36,
@@ -19,12 +19,14 @@ export class Game {
 			//spacing: 0.8,
 			fontFamily: "pix",
 			//forceSquareRatio: true,
-            bg: "black",
-            
+			bg: "black",
 		});
+	}
+
+	run() {
 
 		if (Global.IS_WEB) {
-			document.body.appendChild(d.getContainer() as Node);
+			document.body.appendChild(this.display.getContainer() as Node);
 
 			//解决高分屏字体模糊
 			var canvas = document.querySelector("canvas");
@@ -32,7 +34,7 @@ export class Game {
 				var context = canvas.getContext("2d");
 				if (context != null) {
 					canvas.style.width = canvas.width / window.devicePixelRatio + 'px';
-                    canvas.style.height = canvas.height / window.devicePixelRatio + 'px';
+					canvas.style.height = canvas.height / window.devicePixelRatio + 'px';
 				}
 			}
 		}
@@ -68,29 +70,22 @@ export class Game {
 			});
 		}
 
-		for (let i = 0; i < d._options.width; i++) {
-			for (let j = 0; j < d._options.height; j++) {
-				if (!i || !j || i + 1 == d._options.width || j + 1 == d._options.height) {
-					d.draw(i, j, "#", "black", "gray");
-				}
-				else {
-					d.draw(i, j, ".", "#666", "black");
-				}
-			}
-		}
-
-		//nodejs下颜色必须取整，因为终端无法显示浮点颜色
-		let t = Math.floor(255 / d._options.height);
-		for (let i = 0; i < d._options.height; i++) {
-			let fg = Color.toRGB([i * t, i * t, i * t]);
-			let bg = Color.toRGB([255 - i * t, 255 - i * t, 255 - i * t]);
-			//d.drawText(0, i, `%c{${fg}}%b{${bg}}Hello ${i}`);
-			d.drawText(0, i, '%c{rgb(255, 255, 0)}你 好 啊 小 骚 逼 ' + i.toString());
-			d.draw(i, 0, '@', fg, bg);
-		}
-
-
-		d.draw(d._options.width >> 1, d._options.height >> 1, "@", "goldenrod", "blue");
-		d.drawText(10, 10, "Hello World 123 我 爱 你")
+		this.generatorMap();
 	}
+
+	generatorMap() {
+		//ROT.RNG.setSeed(1234);
+		var map = new Map.Digger(this.display._options.width, this.display._options.height);
+		map.create(this.display.DEBUG);
+
+		var rooms = map.getRooms();
+		for (var i = 0; i < rooms.length; i++) {
+			var room = rooms[i];
+			room.getDoors(this.drawDoor);
+		}
+	}
+
+	drawDoor (x: number, y: number) {
+		this.display.draw(x, y, "", "", "red");
+	};
 }

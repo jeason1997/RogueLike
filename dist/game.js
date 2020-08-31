@@ -25,9 +25,7 @@ var rot_js_2 = require("rot-js");
 var Global = __importStar(require("./main"));
 var Game = /** @class */ (function () {
     function Game() {
-    }
-    Game.prototype.run = function () {
-        var d = new rot_js_1.Display({
+        this.display = new rot_js_1.Display({
             layout: Global.IS_WEB ? 'rect' : 'term',
             //字体大小，在浏览器canvas模式下才有用，nodejs下是取决于终端到字体大小的
             fontSize: 36,
@@ -37,8 +35,10 @@ var Game = /** @class */ (function () {
             //forceSquareRatio: true,
             bg: "black",
         });
+    }
+    Game.prototype.run = function () {
         if (Global.IS_WEB) {
-            document.body.appendChild(d.getContainer());
+            document.body.appendChild(this.display.getContainer());
             //解决高分屏字体模糊
             var canvas = document.querySelector("canvas");
             if (canvas != null) {
@@ -76,28 +76,22 @@ var Game = /** @class */ (function () {
                 }
             });
         }
-        for (var i = 0; i < d._options.width; i++) {
-            for (var j = 0; j < d._options.height; j++) {
-                if (!i || !j || i + 1 == d._options.width || j + 1 == d._options.height) {
-                    d.draw(i, j, "#", "black", "gray");
-                }
-                else {
-                    d.draw(i, j, ".", "#666", "black");
-                }
-            }
-        }
-        //nodejs下颜色必须取整，因为终端无法显示浮点颜色
-        var t = Math.floor(255 / d._options.height);
-        for (var i = 0; i < d._options.height; i++) {
-            var fg = rot_js_2.Color.toRGB([i * t, i * t, i * t]);
-            var bg = rot_js_2.Color.toRGB([255 - i * t, 255 - i * t, 255 - i * t]);
-            //d.drawText(0, i, `%c{${fg}}%b{${bg}}Hello ${i}`);
-            d.drawText(0, i, '%c{rgb(255, 255, 0)}你 好 啊 小 骚 逼 ' + i.toString());
-            d.draw(i, 0, '@', fg, bg);
-        }
-        d.draw(d._options.width >> 1, d._options.height >> 1, "@", "goldenrod", "blue");
-        d.drawText(10, 10, "Hello World 123 我 爱 你");
+        this.generatorMap();
     };
+    Game.prototype.generatorMap = function () {
+        //ROT.RNG.setSeed(1234);
+        var map = new rot_js_2.Map.Digger(this.display._options.width, this.display._options.height);
+        map.create(this.display.DEBUG);
+        var rooms = map.getRooms();
+        for (var i = 0; i < rooms.length; i++) {
+            var room = rooms[i];
+            room.getDoors(this.drawDoor);
+        }
+    };
+    Game.prototype.drawDoor = function (x, y) {
+        this.display.draw(x, y, "", "", "red");
+    };
+    ;
     return Game;
 }());
 exports.Game = Game;

@@ -2,21 +2,18 @@
 
 import { Game } from "./game";
 
-export let GAME_INIT = false;
 export const IS_WEB = typeof window != 'undefined';
 
 if (IS_WEB) {
+	//init
+	var node = document.getElementById("startgame");
+	node?.parentNode?.removeChild(node);
+	new Game().run();
+	GAME_INIT = true;
+
 	document.addEventListener("keydown", keydown);
 
 	function keydown(event: KeyboardEvent) {
-		if (!GAME_INIT) {
-			var node = document.getElementById("startgame");
-			node?.parentNode?.removeChild(node);
-
-			new Game().run();
-			GAME_INIT = true;
-		}
-
 		if (event.key == 'F11') {
 			if (IsFullScreenCurrently())
 				GoOutFullscreen();

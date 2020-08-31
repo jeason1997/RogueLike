@@ -1,20 +1,18 @@
 "use strict";
 //@ts-nocheck
+var _a;
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.IS_WEB = exports.GAME_INIT = void 0;
+exports.IS_WEB = void 0;
 var game_1 = require("./game");
-exports.GAME_INIT = false;
 exports.IS_WEB = typeof window != 'undefined';
 if (exports.IS_WEB) {
+    //init
+    var node = document.getElementById("startgame");
+    (_a = node === null || node === void 0 ? void 0 : node.parentNode) === null || _a === void 0 ? void 0 : _a.removeChild(node);
+    new game_1.Game().run();
+    GAME_INIT = true;
     document.addEventListener("keydown", keydown);
     function keydown(event) {
-        var _a;
-        if (!exports.GAME_INIT) {
-            var node = document.getElementById("startgame");
-            (_a = node === null || node === void 0 ? void 0 : node.parentNode) === null || _a === void 0 ? void 0 : _a.removeChild(node);
-            new game_1.Game().run();
-            exports.GAME_INIT = true;
-        }
         if (event.key == 'F11') {
             if (IsFullScreenCurrently())
                 GoOutFullscreen();
