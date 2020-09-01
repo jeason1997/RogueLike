@@ -23,7 +23,10 @@ exports.Game = void 0;
 var ROT = __importStar(require("rot-js"));
 var rot_js_1 = require("rot-js");
 var rot_js_2 = require("rot-js");
+var rot_js_3 = require("rot-js");
 var Global = __importStar(require("./main"));
+var utils_1 = require("./utils");
+var player_1 = require("./player");
 var Game = /** @class */ (function () {
     function Game() {
         this.display = new rot_js_1.Display({
@@ -32,11 +35,25 @@ var Game = /** @class */ (function () {
             fontSize: 36,
             //tileWidth: 50,
             //spacing: 0.8,
-            fontFamily: "pix12",
-            //forceSquareRatio: true,
+            fontFamily: "pix16",
+            forceSquareRatio: true,
             bg: "black",
+            width: Global.IS_WEB ? 50 : process.stdout.columns,
+            height: Global.IS_WEB ? 30 : process.stdout.rows,
         });
+        this.player = new player_1.Player();
+        this.player.position = new utils_1.Point(this.display._options.width / 2, this.display._options.height / 2);
+        this.mapData = new utils_1.Array2D(this.display._options.width, this.display._options.height);
     }
+    Object.defineProperty(Game, "Instance", {
+        get: function () {
+            if (this.instance == null)
+                this.instance = new Game();
+            return this.instance;
+        },
+        enumerable: false,
+        configurable: true
+    });
     Game.prototype.run = function () {
         if (Global.IS_WEB) {
             document.body.appendChild(this.display.getContainer());
@@ -51,8 +68,6 @@ var Game = /** @class */ (function () {
             }
         }
         else {
-            //d._options.width = process.stdout.columns;
-            //d._options.height = process.stdout.rows;
             // acquire some libraries we'll need
             var keypress = require("keypress");
             // when the program terminates, put the console back the way we found it
@@ -78,25 +93,51 @@ var Game = /** @class */ (function () {
             });
         }
         this.generatorMap();
+        this.updateMap();
+    };
+    Game.prototype.updateMap = function () {
+        //draw map
+        for (var x = 0; x < this.mapData.rows; x++) {
+            for (var y = 0; y < this.mapData.columns; y++) {
+                this.drawMap(x, y, this.mapData.get(x, y));
+            }
+        }
+        //draw fov
+        var fov = new ROT.FOV.PreciseShadowcasting(this.lightPasses.bind(this));
+        fov.compute(this.player.position.x, this.player.position.y, 10, this.drawFov.bind(this));
+        //draw player
+        this.display.draw(this.player.position.x, this.player.position.y, "@", "white", "black");
     };
     Game.prototype.generatorMap = function () {
-        ROT.RNG.setSeed(1234);
-        var map = new rot_js_2.Map.Digger(this.display._options.width, this.display._options.height);
-        map.create(this.drawMap.bind(this));
-        var rooms = map.getRooms();
+        var _this = this;
+        //ROT.RNG.setSeed(1234);
+        var map = new rot_js_3.Map.Digger(this.display._options.width, this.display._options.height);
+        map.create(function (x, y, contents) {
+            _this.mapData.set(x, y, contents);
+        });
+        /* var rooms = map.getRooms();
         for (var i = 0; i < rooms.length; i++) {
             var room = rooms[i];
             room.getDoors(this.drawDoor.bind(this));
-        }
+        } */
+    };
+    //计算光照遮挡
+    Game.prototype.lightPasses = function (x, y) {
+        return this.mapData.get(x, y) == 0;
     };
     Game.prototype.drawMap = function (x, y, contents) {
-        var color = contents == 0 ? "white" : "black";
+        var color = contents == 0 ? "black" : "white";
         this.display.draw(x, y, "", "", color);
     };
     Game.prototype.drawDoor = function (x, y) {
         this.display.draw(x, y, "", "", "red");
     };
     ;
+    Game.prototype.drawFov = function (x, y, r, visibility) {
+        var c = rot_js_2.Color.toRGB([0, (255 - r * 20) - (1 - visibility) * 40, 0]);
+        var color = (this.mapData.get(x, y) ? "gray" : c);
+        this.display.draw(x, y, "", "", color);
+    };
     return Game;
 }());
 exports.Game = Game;

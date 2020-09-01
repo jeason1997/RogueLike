@@ -8,7 +8,7 @@ if (IS_WEB) {
 	//init
 	var node = document.getElementById("startgame");
 	node?.parentNode?.removeChild(node);
-	new Game().run();
+	Game.Instance.run();
 
 	document.addEventListener("keydown", keydown);
 
@@ -58,5 +58,5 @@ if (IS_WEB) {
 	}
 }
 else {
-	new Game().run();
+	Game.Instance.run();
 }

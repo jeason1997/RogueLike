@@ -9,7 +9,7 @@ if (exports.IS_WEB) {
     //init
     var node = document.getElementById("startgame");
     (_a = node === null || node === void 0 ? void 0 : node.parentNode) === null || _a === void 0 ? void 0 : _a.removeChild(node);
-    new game_1.Game().run();
+    game_1.Game.Instance.run();
     document.addEventListener("keydown", keydown);
     function keydown(event) {
         if (event.key == 'F11') {
@@ -54,6 +54,6 @@ if (exports.IS_WEB) {
     }
 }
 else {
-    new game_1.Game().run();
+    game_1.Game.Instance.run();
 }
 //# sourceMappingURL=main.js.map
