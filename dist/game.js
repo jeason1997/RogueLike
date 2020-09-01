@@ -41,9 +41,6 @@ var Game = /** @class */ (function () {
             width: Global.IS_WEB ? 50 : process.stdout.columns,
             height: Global.IS_WEB ? 30 : process.stdout.rows,
         });
-        this.player = new player_1.Player();
-        this.player.position = new utils_1.Point(this.display._options.width / 2, this.display._options.height / 2);
-        this.mapData = new utils_1.Array2D(this.display._options.width, this.display._options.height);
     }
     Object.defineProperty(Game, "Instance", {
         get: function () {
@@ -93,6 +90,7 @@ var Game = /** @class */ (function () {
             });
         }
         this.generatorMap();
+        this.initPlayer();
         this.updateMap();
     };
     Game.prototype.updateMap = function () {
@@ -110,16 +108,23 @@ var Game = /** @class */ (function () {
     };
     Game.prototype.generatorMap = function () {
         var _this = this;
+        this.mapData = new utils_1.Array2D(this.display._options.width, this.display._options.height);
         //ROT.RNG.setSeed(1234);
         var map = new rot_js_3.Map.Digger(this.display._options.width, this.display._options.height);
         map.create(function (x, y, contents) {
             _this.mapData.set(x, y, contents);
         });
-        /* var rooms = map.getRooms();
-        for (var i = 0; i < rooms.length; i++) {
+        this.rooms = map.getRooms();
+        /* for (var i = 0; i < rooms.length; i++) {
             var room = rooms[i];
             room.getDoors(this.drawDoor.bind(this));
-        } */
+        }  */
+    };
+    Game.prototype.initPlayer = function () {
+        var room = this.rooms[0];
+        var c = room.getCenter();
+        this.player = new player_1.Player();
+        this.player.position = new utils_1.Point(c[0], c[1]);
     };
     //计算光照遮挡
     Game.prototype.lightPasses = function (x, y) {

@@ -21,7 +21,7 @@ export class Player {
         x += (e.key == "a" || e.key == "ArrowLeft") ? -1 : 0;
         x += (e.key == "d" || e.key == "ArrowRight") ? 1 : 0;
         y += (e.key == "w" || e.key == "ArrowUp") ? -1 : 0;
-        y += (e.key == "s" || e.key == "ArrowDonw") ? 1 : 0;
+        y += (e.key == "s" || e.key == "ArrowDown") ? 1 : 0;
 
         var newPos = this.position.add(new Point(x, y));
 

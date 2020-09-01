@@ -19,7 +19,7 @@ var Player = /** @class */ (function () {
         x += (e.key == "a" || e.key == "ArrowLeft") ? -1 : 0;
         x += (e.key == "d" || e.key == "ArrowRight") ? 1 : 0;
         y += (e.key == "w" || e.key == "ArrowUp") ? -1 : 0;
-        y += (e.key == "s" || e.key == "ArrowDonw") ? 1 : 0;
+        y += (e.key == "s" || e.key == "ArrowDown") ? 1 : 0;
         var newPos = this.position.add(new utils_1.Point(x, y));
         if (game_1.Game.Instance.mapData.get(newPos.x, newPos.y) == 0) {
             this.position = newPos;

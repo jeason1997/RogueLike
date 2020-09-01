@@ -7,6 +7,7 @@ import * as Global from './main';
 import { Array2D, Point } from './utils';
 import { Player } from './player';
 import FOV from 'rot-js/lib/fov/fov';
+import { Room } from 'rot-js/lib/map/features';
 
 
 export class Game {
@@ -19,8 +20,9 @@ export class Game {
 	}
 
 	private display: Display;
-	public player: Player;
-	public mapData: Array2D;
+	public player!: Player;
+	public mapData!: Array2D;
+	public rooms!: Room[];
 
 	constructor() {
 
@@ -37,9 +39,6 @@ export class Game {
 			height: Global.IS_WEB ? 30 : process.stdout.rows,
 		});
 
-		this.player = new Player();
-		this.player.position = new Point(this.display._options.width / 2, this.display._options.height / 2);
-		this.mapData = new Array2D(this.display._options.width, this.display._options.height);
 	}
 
 	run() {
@@ -86,6 +85,7 @@ export class Game {
 		}
 
 		this.generatorMap();
+		this.initPlayer();
 		this.updateMap();
 	}
 
@@ -96,7 +96,7 @@ export class Game {
 				this.drawMap(x, y, this.mapData.get(x, y));
 			}
 		}
-		
+
 		//draw fov
 		var fov = new ROT.FOV.PreciseShadowcasting(this.lightPasses.bind(this));
 		fov.compute(this.player.position.x, this.player.position.y, 10, this.drawFov.bind(this));
@@ -106,17 +106,26 @@ export class Game {
 	}
 
 	generatorMap() {
+		this.mapData = new Array2D(this.display._options.width, this.display._options.height);
+
 		//ROT.RNG.setSeed(1234);
 		var map = new Map.Digger(this.display._options.width, this.display._options.height);
 		map.create((x, y, contents) => {
 			this.mapData.set(x, y, contents);
 		});
 
-		/* var rooms = map.getRooms();
-		for (var i = 0; i < rooms.length; i++) {
+		this.rooms = map.getRooms();
+		/* for (var i = 0; i < rooms.length; i++) {
 			var room = rooms[i];
 			room.getDoors(this.drawDoor.bind(this));
-		} */
+		}  */
+	}
+
+	initPlayer() {
+		var room = this.rooms[0];
+		var c = room.getCenter();
+		this.player = new Player();
+		this.player.position = new Point(c[0], c[1]);
 	}
 
 	//计算光照遮挡
