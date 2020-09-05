@@ -97,7 +97,7 @@ var Game = /** @class */ (function () {
             fontSize: 30,
             //tileWidth: 50,
             //spacing: 0.8,
-            fontFamily: "pix16",
+            fontFamily: "pix",
             forceSquareRatio: true,
             bg: "black",
             width: Global.IS_WEB ? 60 : process.stdout.columns,
@@ -210,27 +210,28 @@ var Game = /** @class */ (function () {
             _this.mapData.set(x, y, o);
         }, 0, function () { });
     };
-    /* generatorMap() {
-        this.mapData = new Array2D(Number, this.display._options.width, this.display._options.height, 1);
-
-        var map = new Map.Digger(this.display._options.width, this.display._options.height);
-        map.create((x, y, contents) => {
-            this.mapData.set(x, y, contents);
+    Game.prototype.generatorMap = function () {
+        var _this = this;
+        this.mapData = new utils_1.Array2D(MapObject, this.display._options.width, this.display._options.height);
+        var map = new rot_js_3.Map.Digger(this.display._options.width, this.display._options.height);
+        map.create(function (x, y, contents) {
+            var o = contents == 0 ? new Floor() : new Wall();
+            o.position = new utils_1.Point(x, y);
+            _this.mapData.set(x, y, o);
         });
-
         this.rooms = map.getRooms();
-        for (var i = 0; i < rooms.length; i++) {
-            var room = rooms[i];
-            room.getDoors(this.drawDoor.bind(this));
+        for (var i = 0; i < this.rooms.length; i++) {
+            var room = this.rooms[i];
+            //room.getDoors(this.drawDoor.bind(this));
         }
-    } */
+    };
     Game.prototype.initPlayer = function () {
         //var room = this.rooms[0];
         //var c = room.getCenter();
         this.player = new player_1.Player();
         this.player.position = new utils_1.Point(15, 15);
         //this.player.position = new Point(c[0], c[1]);
-        var flashLight = new ligth_1.Light(utils_1.MyColor.Yellow, this.player.position, 5);
+        var flashLight = new ligth_1.Light(utils_1.MyColor.Yellow, this.player.position, 5, 1);
         this.player.give(flashLight);
         this.lights.push(flashLight);
     };

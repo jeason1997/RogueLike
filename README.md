@@ -16,3 +16,10 @@ require
 global
 而Browserify就是用来解决这个问题的，将commonjs转换格式到浏览器支持
 http://nodejs.cn/learn/differences-between-nodejs-and-the-browser
+
+
+注意，不知为何在linux下npm install后，再sudo apt install gulp，直接运行gulp命令老是失败，有个解决方法就是直接运行node_module下的gulp。
+sudo ln -s /home/pi/Projects/RogueLike/node_modules/gulp/bin/gulp.js /usr/local/bin/gulp       
+然后直接在项目目录下gulp就行了
+或者直接在vscode里ctrl+shift+b运行gulp命令
+注意ln一定要绝对路径，否则链接的快捷方式是无法使用的。

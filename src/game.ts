@@ -84,7 +84,7 @@ export class Game {
 			fontSize: 30,
 			//tileWidth: 50,
 			//spacing: 0.8,
-			fontFamily: "pix16",
+			fontFamily: "pix",
 			forceSquareRatio: true,
 			bg: "black",
 			width: Global.IS_WEB ? 60 : process.stdout.columns,
@@ -204,20 +204,22 @@ export class Game {
 		}, 0, () => { });
 	}
 
-	/* generatorMap() {
-		this.mapData = new Array2D(Number, this.display._options.width, this.display._options.height, 1);
+	generatorMap() {
+		this.mapData = new Array2D(MapObject, this.display._options.width, this.display._options.height);
 
 		var map = new Map.Digger(this.display._options.width, this.display._options.height);
 		map.create((x, y, contents) => {
-			this.mapData.set(x, y, contents);
+			var o = contents == 0 ? new Floor() : new Wall();
+			o.position = new Point(x, y);
+			this.mapData.set(x, y, o);
 		});
 
 		this.rooms = map.getRooms();
-		for (var i = 0; i < rooms.length; i++) {
-			var room = rooms[i];
-			room.getDoors(this.drawDoor.bind(this));
+		for (var i = 0; i < this.rooms.length; i++) {
+			var room = this.rooms[i];
+			//room.getDoors(this.drawDoor.bind(this));
 		} 
-	} */
+	}
 
 	initPlayer() {
 		//var room = this.rooms[0];
@@ -226,7 +228,7 @@ export class Game {
 		this.player.position = new Point(15, 15);
 		//this.player.position = new Point(c[0], c[1]);
 
-		var flashLight = new Light(MyColor.Yellow, this.player.position, 5);
+		var flashLight = new Light(MyColor.Yellow, this.player.position, 5, 1);
 		this.player.give(flashLight);
 		this.lights.push(flashLight);
 	}
