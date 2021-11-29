@@ -79,14 +79,27 @@ export class Game {
 
 	constructor() {
 		this.display = new Display({
-			layout: Global.IS_WEB ? 'rect' : 'term',
-			//字体大小，在浏览器canvas模式下才有用，nodejs下是取决于终端到字体大小的
-			fontSize: 30,
-			//tileWidth: 50,
-			//spacing: 0.8,
+			layout: Global.IS_WEB ? (Global.IS_TILE ? "tile" : "rect") : ("term"),
+			//字体大小，只有在rect模式下才有用
+			fontSize: 10,
+			//tile大小，只有在tile模式下才有用，为tile图片上每格子的大小
+			tileWidth: 10,
+			tileHeight: 10,
+			//tile图集，只有在tile模式下才有用
+			tileSet: Global.tileSet,
+			//tile图集与字符的映射，字符对应的图块的坐标
+			tileMap: {
+				"@": [10, 0],
+				"#": [30, 20],
+				"*": [100, 20],
+				".": [140, 20]
+			},
+			tileColorize: true,
+			spacing: 1,
 			fontFamily: "pix",
 			forceSquareRatio: true,
-			bg: "black",
+			bg: "transparent",
+			//画布尺寸
 			width: Global.IS_WEB ? 60 : process.stdout.columns,
 			height: Global.IS_WEB ? 40 : process.stdout.rows,
 		});

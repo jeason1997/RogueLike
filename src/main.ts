@@ -1,13 +1,20 @@
 //@ts-nocheck
 
+import { exitCode } from "process";
 import { Game } from "./game";
 
 export const IS_WEB = typeof window != 'undefined';
+export const IS_TILE = false;
+export const tileSet: HTMLImageElement;
 
 if (IS_WEB) {
 	//init
 	var node = document.getElementById("startgame");
 	node?.parentNode?.removeChild(node);
+
+	tileSet = document.createElement("img");
+	tileSet.src = "resources/texture/tiles.png";
+
 	Game.Instance.run();
 
 	document.addEventListener("keydown", keydown);

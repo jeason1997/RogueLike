@@ -2,13 +2,16 @@
 //@ts-nocheck
 var _a;
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.IS_WEB = void 0;
+exports.tileSet = exports.IS_TILE = exports.IS_WEB = void 0;
 var game_1 = require("./game");
 exports.IS_WEB = typeof window != 'undefined';
+exports.IS_TILE = false;
 if (exports.IS_WEB) {
     //init
     var node = document.getElementById("startgame");
     (_a = node === null || node === void 0 ? void 0 : node.parentNode) === null || _a === void 0 ? void 0 : _a.removeChild(node);
+    exports.tileSet = document.createElement("img");
+    exports.tileSet.src = "resources/texture/tiles.png";
     game_1.Game.Instance.run();
     document.addEventListener("keydown", keydown);
     function keydown(event) {
