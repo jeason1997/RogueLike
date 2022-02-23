@@ -1,10 +1,17 @@
+克隆项目并运行：
+1.确保linux系统安装了nodejs, npm, gulp  (sudo apt install ...)
+2.在目录下运行终端，然后npm install初始化
+3.直接在项目路径输入gulp，开始监视...
+
+
 初始化项目：
-1.确保安装了nodejs, npm
+1.确保linux系统安装了nodejs, npm, gulp  (sudo apt install ...)
 2.在目录下运行终端，然后npm install初始化
 3.安装typescript，npm install -g typescript
 4.安装gulp自动打包工具，npm install -g gulp
 5.配置tsconfig.json
 6.配置gulpfile.js，自动打包
+7.如果需要打包到浏览器运行，还需与安装Browserify模块
 
 
 初始化typescript：
@@ -30,7 +37,7 @@ global
 http://nodejs.cn/learn/differences-between-nodejs-and-the-browser
 
 
-注意，不知为何在linux下npm install后，再sudo apt install gulp -g，直接运行gulp命令老是失败，有个解决方法就是直接运行node_module下的gulp。
+注意，不知为何在linux下npm install后，再sudo apt install gulp，直接运行gulp命令老是失败，有个解决方法就是直接运行node_module下的gulp。
 sudo ln -s /home/pi/Projects/RogueLike/node_modules/gulp/bin/gulp.js /usr/local/bin/gulp       
 然后直接在项目目录下gulp就行了
 或者直接在vscode里ctrl+shift+b运行gulp命令
